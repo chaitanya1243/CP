@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader; 
 import java.util.*; 
   
-public class D 
+public class C 
 { 
     static class FastReader 
     { 
@@ -62,68 +62,59 @@ public class D
         } 
     } 
     static final FastReader in = new FastReader();
-    static long mod = (long)1e9+7;
-    long tc(){
-        int n = in.nextInt();
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for(int i=0; i<=n; i++)
-        adj.add(new ArrayList<>());
+    int tc(){
+        int n = in.nextInt(), m = in.nextInt();
+        int arr[][] = new int[n][m+1];
 
-        for(int i=1; i<n; i++){
-            int x = in.nextInt(), y = in.nextInt();
-            adj.get(x).add(y);
-            adj.get(y).add(x);
+        for(int i=0; i<n; i++)
+        arr[i][0] = in.nextInt();
+
+        for(int i=0; i<n; i++)
+        for(int j=1; j<=m; j++){
+            arr[i][j] = arr[i][j-1]+in.nextInt();
         }
-        int k = in.nextInt();
-        long wts[] = new long[k];
-        for(int i=0; i<k; i++)
-        wts[i] = in.nextInt();
 
-        ArrayList<Long> edges = new ArrayList<>();
-        dfs(1, -1, adj, edges);
-        Collections.sort(edges);
-        Arrays.sort(wts);
-        long ans = 0;
-        if(k<=n-1){
-            for(int i=n-2, j = k-1; i>=0; i--, j--){
-                if(j<0){
-                    ans += edges.get(i);
-                    ans = ans%mod;
-                }else{
-                    ans += (edges.get(i)*wts[j])%mod;
-                    ans = ans%mod;
-                } 
+        int ranks[][] = new int[n][m];
+
+        for(int i=1; i<=m; i++){
+            TreeMap<Integer, List<Integer>> map = new TreeMap<>((a,b)->b-a);
+            for(int j=0; j<n; j++){
+                if(!map.containsKey(arr[j][i]))
+                map.put(arr[j][i], new ArrayList<>());
+                map.get(arr[j][i]).add(j);
             }
-        }else{
-            //
-            for(int i = k-1; i>n-2; i--){
-                wts[i-1] *= wts[i];
-                wts[i-1] = wts[i-1]%mod;
-            }
-            for(int i=n-2; i>=0; i--){
-                ans += (edges.get(i)*wts[i])%mod;
-                ans = ans%mod;
+            int prev = 0;
+            for(Map.Entry<Integer, List<Integer>> e: map.entrySet()){
+                for(int t: e.getValue())
+                ranks[t][i-1] = prev+1;
+                prev += e.getValue().size();
             }
         }
-        // System.out.println(edges);
+        // System.out.println(Arrays.deepToString(arr));
+        // System.out.println(Arrays.deepToString(ranks));
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            int bestRank = n+1 , bestRating = Integer.MIN_VALUE;
+            int rankMonth = -1, ratingMonth = -1; 
+            for(int j=1; j<=m; j++){
+                if(arr[i][j]>bestRating){
+                    ratingMonth = j;
+                    bestRating = arr[i][j];
+                }
+                if(ranks[i][j-1]<bestRank){
+                    bestRank = ranks[i][j-1];
+                    rankMonth = j;
+                }
+            }
+            if(rankMonth!=ratingMonth)
+            ans++;
+        }
         return ans;
-    }
-    int dfs(int n, int p, ArrayList<ArrayList<Integer>> adj, ArrayList<Long> edges){
-        int count = 1;
-        for(int i: adj.get(n)){
-            if(i!=p){
-                count += dfs(i, n, adj, edges);
-            }
-        }
-        if(p!=-1)
-        edges.add(((long)count*((long)(adj.size()-1-count))%mod));
-        // System.out.println(p+" "+count);
-        return count;
     }
     public static void main(String[] args) 
     { 
         StringBuilder out = new StringBuilder();
-        D ob = new D();
+        C ob = new C();
         int t = in.nextInt();
         while(t-->0){
            out.append(ob.tc()+"\n");

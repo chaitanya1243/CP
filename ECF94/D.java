@@ -62,63 +62,53 @@ public class D
         } 
     } 
     static final FastReader in = new FastReader();
-    static long mod = (long)1e9+7;
     long tc(){
         int n = in.nextInt();
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        int arr[] = new int[n];
+        for(int i=0; i<n; i++)
+        arr[i] = in.nextInt();
+        ArrayList<ArrayList<Integer>> map= new ArrayList<>(n+1);
         for(int i=0; i<=n; i++)
-        adj.add(new ArrayList<>());
-
-        for(int i=1; i<n; i++){
-            int x = in.nextInt(), y = in.nextInt();
-            adj.get(x).add(y);
-            adj.get(y).add(x);
-        }
-        int k = in.nextInt();
-        long wts[] = new long[k];
-        for(int i=0; i<k; i++)
-        wts[i] = in.nextInt();
-
-        ArrayList<Long> edges = new ArrayList<>();
-        dfs(1, -1, adj, edges);
-        Collections.sort(edges);
-        Arrays.sort(wts);
+        map.add(new ArrayList<>());
+        for(int i=0; i<n; i++)
+        map.get(arr[i]).add(i);
         long ans = 0;
-        if(k<=n-1){
-            for(int i=n-2, j = k-1; i>=0; i--, j--){
-                if(j<0){
-                    ans += edges.get(i);
-                    ans = ans%mod;
+        for(int i=1; i<=n; i++){
+            if(map.get(i).size()<2) continue;
+            for(int j=1; j<=n; j++){
+                if(map.get(j).size()<2) continue;
+                if(i==j){
+                    if(map.get(i).size()>=4)
+                    ans += fact(map.get(i).size());
                 }else{
-                    ans += (edges.get(i)*wts[j])%mod;
-                    ans = ans%mod;
-                } 
-            }
-        }else{
-            //
-            for(int i = k-1; i>n-2; i--){
-                wts[i-1] *= wts[i];
-                wts[i-1] = wts[i-1]%mod;
-            }
-            for(int i=n-2; i>=0; i--){
-                ans += (edges.get(i)*wts[i])%mod;
-                ans = ans%mod;
+                    List<Integer> ft = map.get(i);
+                    List<Integer> st = map.get(j);
+                    int t1=0, rt1 = 0,  t2=0, rt2 = 0;
+                    for(t1 = 0; t1<ft.size()-1; t1++){
+                        for(t2 = rt2; t2<st.size(); t2++){
+                            if(st.get(t2)>ft.get(t1))
+                            break;
+                        }
+                        rt1 = t1;
+                        while(rt1<ft.size() && ft.get(rt1)<st.get(t2)) rt1++;
+                        if(rt1==ft.size()) break;
+                        rt2 = t2;
+                        while(rt2<st.size() && st.get(rt2)<ft.get(rt1)) rt2++;
+                        if(rt2==st.size()) break;
+                        ans += (rt1-t1)*(rt2-t2)*(rt2-st.size()+1);
+                        System.out.println(t1+" "+rt1+" "+t2+" "+rt2);
+                        t1 = rt1;
+
+                    }
+                }
             }
         }
-        // System.out.println(edges);
+        System.out.println(map);
         return ans;
     }
-    int dfs(int n, int p, ArrayList<ArrayList<Integer>> adj, ArrayList<Long> edges){
-        int count = 1;
-        for(int i: adj.get(n)){
-            if(i!=p){
-                count += dfs(i, n, adj, edges);
-            }
-        }
-        if(p!=-1)
-        edges.add(((long)count*((long)(adj.size()-1-count))%mod));
-        // System.out.println(p+" "+count);
-        return count;
+    long fact(int n){
+        if(n==4) return 1;
+        return n*fact(n-1);
     }
     public static void main(String[] args) 
     { 
