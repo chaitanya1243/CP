@@ -33,6 +33,8 @@ public class B
             arr[i] = arr[i+1];
             cur = is(arr, i-1) + is(arr, i) + is(arr, i+1);
             x = Math.max(def-cur, x);
+            
+            
 
             arr[i] = t;
         }
