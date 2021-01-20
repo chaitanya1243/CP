@@ -11,7 +11,7 @@ public class A
         else if(n==2)
         System.out.println("98");
         else{
-            StringBuilder s = new StringBuilder();
+            java.lang.StringBuilder s = new java.lang.StringBuilder();
             s.append("98");
             for(int i=3, x = 9; i<=n; i++, x = (x==9?0:x+1)){
                 s.append(x);
