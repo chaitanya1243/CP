@@ -11,7 +11,7 @@ class Solution{
         dp = new int[n][m];
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                dp[i][j]=-1;
+                dp[i][j]=9;
             }
         }
         int ans = 0;
@@ -25,7 +25,7 @@ class Solution{
         }
         System.out.println(ans);
         // System.out.println(Arrays.deepToString(dp));
-        // print();
+        print();
     }
     static int[][] dirs = new int[][]{{0,1},{0, -1}, {1, 0}, {-1, 0}};
 static int find(List<String> map, char h, int i, int j, boolean[][] v){
@@ -34,10 +34,10 @@ static int find(List<String> map, char h, int i, int j, boolean[][] v){
         // System.out.println("I "+i+" j "+j);
         if(i<0||i>=n||j<0||j>=m) return 0;
         if(map.get(i).charAt(j)!=h) return 0;
-        // if(v[i][j]) return 0;
-        if(dp[i][j]!=-1) return dp[i][j];
+        if(v[i][j]) return 0;
+        // if(dp[i][j]!=-1) return dp[i][j];
+            v[i][j] = true;
         if(h=='9'){
-            // v[i][j] = true;
             return dp[i][j]=1;
         }
         int paths = 0;
