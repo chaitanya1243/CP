@@ -1,0 +1,110 @@
+import java.util.*;
+import java.io.*;
+
+public final class C{
+    public static void main(String args[]) throws FileNotFoundException{
+        FastScanner sc = new FastScanner(System.in);
+        int t = sc.nextInt();
+        while(t-->0){
+            solve(sc);
+        }
+    }
+
+    static void solve(FastScanner sc) throws FileNotFoundException{
+        int n = sc.nextInt();
+        int[][] arr = new int[n][n];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                arr[i][j] = sc.nextInt();
+            }
+        }
+        int sum = (2*n*(2*n+1))/2;
+        int ans[] = new int[2*n];
+        for(int i=1; i<=n; i++){
+            ans[i] = arr[0][i-1];
+            sum-=ans[i];
+        }
+        for(int i=1; i<n; i++){
+            ans[n+i] = arr[n-1][i];
+            sum-= ans[n+i];
+        }
+        ans[0] = sum;
+        for(var i: ans) System.out.print(i+" ");
+        System.out.println();
+    }
+
+    static public class FastScanner {
+        public BufferedReader br;
+        public StringTokenizer st;
+ 
+        public FastScanner(InputStream in) {
+            br = new BufferedReader(new InputStreamReader(in));
+        }
+ 
+        public FastScanner(String fileName) {
+            try {
+                br = new BufferedReader(new FileReader(fileName));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+ 
+        public int nextInt() {
+            return Integer.parseInt(next());
+        }
+ 
+        public boolean hasMoreTokens() {
+            while (st == null || !st.hasMoreElements()) {
+                String line = null;
+                try {
+                    line = br.readLine();
+                } catch (IOException e) {
+                    return false;
+                }
+                if (line == null) {
+                    return false;
+                }
+                st = new StringTokenizer(line);
+            }
+            return true;
+        }
+ 
+        public String next() {
+            while (st == null || !st.hasMoreElements()) {
+                String line = null;
+                try {
+                    line = br.readLine();
+                } catch (IOException e) {
+                }
+                st = new StringTokenizer(line);
+            }
+            return st.nextToken();
+        }
+ 
+        public long nextLong() {
+            return Long.parseLong(next());
+        }
+ 
+        public double nextDouble() {
+            return Double.parseDouble(next());
+        }
+ 
+        public int[] nextIntArray(int n) {
+            int[] ret = new int[n];
+            for (int i = 0; i < n; i++) {
+                ret[i] = nextInt();
+            }
+            return ret;
+        }
+ 
+        public long[] nextLongArray(int n) {
+            long[] ret = new long[n];
+            for (int i = 0; i < n; i++) {
+                ret[i] = nextLong();
+            }
+            return ret;
+        }
+    }
+}
+
+

@@ -122,16 +122,16 @@ class Solution{
         /// <vA -> v<<A>A>^A
         /// <V<A -> v<<A>A<A>>^A
         /// v<<A -> v<A<AA>>^A
-        String str = "980A";
-        // System.out.println(solve(str));
+        // String str = "980A";
+        // // System.out.println(solve(str));
 
-                int ans=0;
-        while( sc.hasNext()){
-           var line = sc.nextLine();
-           int inp = Integer.parseInt(line.substring(0, 3));
-           ans+= inp*solve(line);
-        }
-        System.out.println(ans);
+        //         int ans=0;
+        // while( sc.hasNext()){
+        //    var line = sc.nextLine();
+        //    int inp = Integer.parseInt(line.substring(0, 3));
+        //    ans+= inp*solve(line);
+        // }
+        System.out.println(solve("8"));
 
 
         // HashMap<String, String> keypadDP = new HashMap<>(); //dist
